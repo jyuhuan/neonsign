@@ -1,0 +1,6 @@
+[project]
+name = "neonsign"
+version = "0.1.0"
+authors = [
+  { name="Yuhuan Jiang" },
+]
