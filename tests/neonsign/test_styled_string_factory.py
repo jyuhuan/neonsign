@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from neonsign.styled_string import PlainString, StringGroup, StyledString
+from neonsign.styled_string import PlainString, ConcatenatedString, StyledString
 from neonsign.styled_string_factory import construct_multiple, construct_single
 
 
@@ -37,24 +37,24 @@ class TestStyledStringFactory(TestCase):
 
         # Case 2.1: From multiple str objects:
         result_2_1: StyledString = construct_multiple('test1', 'test2')
-        self.assertIsInstance(result_2_1, StringGroup)
-        self.assertEqual(2, len(result_2_1.members))
-        self.assertIsInstance(result_2_1.members[0], PlainString)
-        self.assertIsInstance(result_2_1.members[1], PlainString)
+        self.assertIsInstance(result_2_1, ConcatenatedString)
+        self.assertEqual(2, len(result_2_1.substrings))
+        self.assertIsInstance(result_2_1.substrings[0], PlainString)
+        self.assertIsInstance(result_2_1.substrings[1], PlainString)
 
         # Case 2.2: From multiple StyledString objects:
         result_2_2: StyledString = construct_multiple(result_1_1, result_2_1)
-        self.assertIsInstance(result_2_2, StringGroup)
-        self.assertEqual(2, len(result_2_2.members))
-        self.assertIsInstance(result_2_2.members[0], PlainString)
-        self.assertIsInstance(result_2_2.members[1], StringGroup)
+        self.assertIsInstance(result_2_2, ConcatenatedString)
+        self.assertEqual(2, len(result_2_2.substrings))
+        self.assertIsInstance(result_2_2.substrings[0], PlainString)
+        self.assertIsInstance(result_2_2.substrings[1], ConcatenatedString)
 
         # Case 2.3: From multiple str and StyledString objects:
         result_2_3: StyledString = construct_multiple('test', result_2_1)
-        self.assertIsInstance(result_2_3, StringGroup)
-        self.assertEqual(2, len(result_2_3.members))
-        self.assertIsInstance(result_2_3.members[0], PlainString)
-        self.assertIsInstance(result_2_3.members[1], StringGroup)
+        self.assertIsInstance(result_2_3, ConcatenatedString)
+        self.assertEqual(2, len(result_2_3.substrings))
+        self.assertIsInstance(result_2_3.substrings[0], PlainString)
+        self.assertIsInstance(result_2_3.substrings[1], ConcatenatedString)
 
         # Case 2.4: From multiple objects, one of which is of unsupported type:
         with self.assertRaises(TypeError) as e:

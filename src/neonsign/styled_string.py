@@ -275,20 +275,20 @@ class PlainString(StyledString):
 
 @final
 @dataclass(frozen=True)
-class StringGroup(StyledString):
-    """A group of styled strings which are concatenated when rendered."""
-    members: Tuple[StyledString, ...]
+class ConcatenatedString(StyledString):
+    """A styled string consisting of concatenated substrings."""
+    substrings: Tuple[StyledString, ...]
 
     def _render_impl(self, commands: Tuple[StyleCommand, ...]) -> str:
-        return ''.join(m._render_impl(commands) for m in self.members)
+        return ''.join(m._render_impl(commands) for m in self.substrings)
 
     @property
     def content(self) -> str:
-        return ''.join(m.content for m in self.members)
+        return ''.join(m.content for m in self.substrings)
 
     @property
     def layout_size(self) -> int:
-        return sum(m.layout_size for m in self.members)
+        return sum(m.layout_size for m in self.substrings)
 
 
 @dataclass(frozen=True)
