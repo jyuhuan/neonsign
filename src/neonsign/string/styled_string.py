@@ -291,11 +291,11 @@ class ConcatenatedString(StyledString):
         return sum(m.layout_size for m in self.substrings)
 
 
-@dataclass(frozen=True)
 class StringWithCommand(StyledString):
     """A styled string with a terminal style command applied."""
-    original: StyledString
-    command: StyleCommand
+    def __init__(self, original: StyledString, command: StyleCommand):
+        self.original =original
+        self.command = command
 
     def _render_impl(self, commands: Tuple[StyleCommand, ...]) -> str:
         return self.original._render_impl(commands + (self.command,))
@@ -310,7 +310,7 @@ class StringWithCommand(StyledString):
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class BoldString(StringWithCommand):
     """A string with the terminal style command ``\\033[1m`` applied."""
     def __init__(self, original: StyledString):
@@ -318,7 +318,7 @@ class BoldString(StringWithCommand):
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class LightString(StringWithCommand):
     """A string with the terminal style command ``\\033[2m`` applied."""
     def __init__(self, original: StyledString):
@@ -326,65 +326,66 @@ class LightString(StringWithCommand):
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class ItalicString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=3))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class UnderlinedString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=4))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class BlinkingString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=5))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class HiddenString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=8))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class CrossedOutString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=9))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class DoublyUnderlinedString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=21))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class FramedString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=51))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class OverlinedString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=53))
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class ForegroundColoredString(StringWithCommand):
     def __init__(self, color: Color, original: StyledString):
+        self.color: Color = color
         super().__init__(
             original=original,
             command=command_for_foreground(color)
@@ -392,9 +393,10 @@ class ForegroundColoredString(StringWithCommand):
 
 
 @final
-@dataclass(frozen=True)
+@dataclass
 class BackgroundColoredString(StringWithCommand):
     def __init__(self, color: Color, original: StyledString):
+        self.color: Color = color
         super().__init__(
             original=original,
             command=command_for_background(color)
