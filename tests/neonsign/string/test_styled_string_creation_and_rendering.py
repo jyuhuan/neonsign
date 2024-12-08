@@ -1,14 +1,14 @@
 from unittest import TestCase
 
-from neonsign.colors import Color
-from neonsign.styled_string import (
-    BackgroundColoredString, BlinkingString, BoldString, CrossedOutString,
-    DoublyUnderlinedString, ForegroundColoredString, FramedString, HiddenString,
-    ItalicString, LightString, OverlinedString, PaddedString, PlainString,
-    ConcatenatedString, UnderlinedString
+from neonsign.core.colors import Color
+from neonsign.string.styled_string import (
+    BackgroundColoredString, BlinkingString, BoldString, ConcatenatedString,
+    CrossedOutString, DoublyUnderlinedString, ForegroundColoredString,
+    FramedString, HiddenString, ItalicString, LightString, OverlinedString,
+    PaddedString, PlainString, UnderlinedString
 )
-from neonsign.syntax import s
-from tests.neonsign.utils import validate_styled_string
+from neonsign.string.syntax import s
+from tests.neonsign.string.utils import validate_styled_string
 
 
 class TestStyledStringCreationAndRendering(TestCase):

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from neonsign.style_command import StyleCommand
+from neonsign.core.style_command import StyleCommand
 
 
 class TestStyleCommand(TestCase):

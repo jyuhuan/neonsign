@@ -1,7 +1,13 @@
 from unittest import TestCase
 
-from neonsign.styled_string import PlainString, ConcatenatedString, StyledString
-from neonsign.styled_string_factory import construct_multiple, construct_single
+from neonsign.string.styled_string import (
+    ConcatenatedString, PlainString,
+    StyledString
+)
+from neonsign.string.styled_string_factory import (
+    construct_multiple,
+    construct_single
+)
 
 
 class TestStyledStringFactory(TestCase):

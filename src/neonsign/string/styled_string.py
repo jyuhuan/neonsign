@@ -5,11 +5,11 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Tuple, final
 
-from neonsign.color_commands import (
+from neonsign.core.color_commands import (
     command_for_background, command_for_foreground
 )
-from neonsign.colors import Color
-from neonsign.style_command import StyleCommand
+from neonsign.core.colors import Color
+from neonsign.core.style_command import StyleCommand
 
 
 class StyledString(ABC):

@@ -1,5 +1,5 @@
-from neonsign.colors import Color, Color24, Color8, SimpleColor
-from neonsign.style_command import StyleCommand
+from neonsign.core.colors import Color, Color24, Color8, SimpleColor
+from neonsign.core.style_command import StyleCommand
 
 _SIMPLE_COLOR_COMMANDS = {
     Color.BLACK: 30,

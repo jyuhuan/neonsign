@@ -1,7 +1,7 @@
 from typing import Callable
 from unittest import TestCase
 
-from neonsign.colors import Color, Color24, Color8, SimpleColor
+from neonsign.core.colors import Color, Color24, Color8, SimpleColor
 
 
 class TestColors(TestCase):

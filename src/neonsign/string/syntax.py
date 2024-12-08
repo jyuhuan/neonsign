@@ -1,7 +1,7 @@
 from typing import Union
 
-from neonsign.styled_string import StyledString
-from neonsign.styled_string_factory import construct_multiple
+from neonsign.string.styled_string import StyledString
+from neonsign.string.styled_string_factory import construct_multiple
 
 
 def s(*contents: Union[str, StyledString]) -> StyledString:

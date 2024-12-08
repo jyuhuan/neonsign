@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Union
 
-from neonsign.styled_string import PlainString, ConcatenatedString, StyledString
+from neonsign.string.styled_string import PlainString, ConcatenatedString, StyledString
 
 
 def construct_multiple(*contents: Union[str, StyledString]) -> StyledString:

@@ -1,7 +1,7 @@
 from typing import Optional
 from unittest import TestCase
 
-from neonsign.styled_string import StyledString
+from neonsign.string.styled_string import StyledString
 
 
 def validate_styled_string(
