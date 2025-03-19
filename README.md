@@ -51,7 +51,7 @@ print(
 </td>
 <td>
 <p>Blinking text:</p>
-<img src="https://yuhuan.me/neonsign/_images/example-0.gif" style="width: 150px" />
+<img src="https://yuhuan.me/neonsign/_images/example-0.gif" width=150 />
 </td>
 </tr>
 
@@ -137,7 +137,7 @@ print(
 
 <td>
 <p>Color-coded logger messages:</p>
-<img src="https://yuhuan.me/neonsign/_images/example-1.gif" style="width: 259px" />
+<img src="https://yuhuan.me/neonsign/_images/example-1.gif" width=259 />
 </td>
 </tr>
 
