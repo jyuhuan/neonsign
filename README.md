@@ -1,14 +1,27 @@
 # NeonSign
 
-## Overview
+NeonSign is a Python library for styling terminal text and creating simple 
+text-based user interfaces, offering a modern declarative syntax.
 
-NeonSign is a Python library for making styled text in terminals. The library 
-offers a modern, declarative syntax. You can simply describe the styles and 
-effects your text should have, without having to work with terminal commands 
-directly.
+With NeonSign, you can simply describe the colors, effects and layout your 
+terminal text should have, without having to work with terminal color commands 
+or box drawing characters manually.
+
+Feature highlights:
+
+- **Style a string** using colors and text effects. Best for highlighting a few 
+  words in a single line,
+
+- **Style a block of text** using colors, effects and layouts. Best for printing
+  contents organized as a list, table, or  
+
+- **Create a simple text-based UI**, when you need interactivity. For an early 
+  preview of the text user interface (TUI) features, see [neonsign-ui](#). 
 
 
 ## Examples
+
+### Styled text strings
 
 <table>
 
@@ -127,5 +140,16 @@ print(
 <img src="https://yuhuan.me/neonsign/_images/example-1.gif" style="width: 259px" />
 </td>
 </tr>
+
+</table>
+
+
+### Styled text blocks
+
+<table>
+
+<tr><td><img src="https://yuhuan.me/neonsign/_images/example-10.png" style="width: 500px" /></td></tr>
+<tr><td><img src="https://yuhuan.me/neonsign/_images/example-12.png" style="width: 310px" /></td></tr>
+<tr><td><img src="https://yuhuan.me/neonsign/_images/example-13.png" style="width: 250px" /></td></tr>
 
 </table>
