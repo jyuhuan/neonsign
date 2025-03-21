@@ -16,7 +16,8 @@ Feature highlights:
   contents organized as a list, table, or  
 
 - **Create a simple text-based UI**, when you need interactivity. For an early 
-  preview of the text user interface (TUI) features, see [neonsign-ui](#). 
+  prototype of the text user interface (TUI) feature, see 
+  [here](#neonsign-ui-prototype). 
 
 
 ## Examples
@@ -51,40 +52,10 @@ print(
 </td>
 <td>
 <p>Blinking text:</p>
-<img src="https://yuhuan.me/neonsign/_images/example-0.gif" width=150 />
+<img src="https://yuhuan.me/neonsign/_images/example-0.gif" width=150px />
 </td>
 </tr>
 
-<tr></tr>
-
-<tr>
-<td>
-
-```python
-from neonsign import s, Color
-
-print(
-    s(
-        s('Hello')
-        .padded_left()
-        .foreground(Color.BRIGHT_YELLOW),
-        s('World')
-        .padded_right()
-        .foreground(Color.BRIGHT_BLUE)
-    )
-    .background(Color.BRIGHT_GREEN)
-    .bold()
-)
-```
-
-</td>
-<td>
-<p>Multicolored text with background:</p>
-<img src="https://yuhuan.me/neonsign/_images/example-2.png" style="width: 120px" />
-</td>
-</tr>
-
-<tr></tr>
 
 <tr>
 
@@ -137,7 +108,7 @@ print(
 
 <td>
 <p>Color-coded logger messages:</p>
-<img src="https://yuhuan.me/neonsign/_images/example-1.gif" width=259 />
+<img src="https://yuhuan.me/neonsign/_images/example-1.gif" width=259px />
 </td>
 </tr>
 
@@ -153,3 +124,13 @@ print(
 <tr><td><img src="https://yuhuan.me/neonsign/_images/example-13.png" style="width: 250px" /></td></tr>
 
 </table>
+
+
+
+
+
+<a id="neonsign-ui-prototype"></a>
+### Text-based UI (early prototype)
+
+<img src="https://yuhuan.me/neonsign/_images/example-20.gif" width=400px />
+
