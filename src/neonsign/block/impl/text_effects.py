@@ -63,12 +63,14 @@ class MappedBlock(LayoutBlock):
 class ForegroundColoredBlock(MappedBlock):
     def __init__(self, original: Block, color: Color):
         super().__init__(original, lambda _: _.foreground(color))
+        self.color = color
 
 
 @final
 class BackgroundColoredBlock(MappedBlock):
     def __init__(self, original: Block, color: Color):
         super().__init__(original, lambda _: _.background(color))
+        self.color = color
 
 
 @final
