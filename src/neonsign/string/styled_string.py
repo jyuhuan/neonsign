@@ -179,6 +179,10 @@ class StyledString(ABC):
         """
         return BackgroundColoredString(color, self)
 
+    def inverted(self) -> StyledString:
+        """Swaps the foreground and background colors of this string."""
+        return ColorInvertedString(self)
+
     def padded(self, num_spaces: int = 1) -> StyledString:
         """Adds padding to both sides of the string.
 
@@ -379,6 +383,13 @@ class FramedString(StringWithCommand):
 class OverlinedString(StringWithCommand):
     def __init__(self, original: StyledString):
         super().__init__(original=original, command=StyleCommand(command=53))
+
+
+@final
+@dataclass
+class ColorInvertedString(StringWithCommand):
+    def __init__(self, original: StyledString):
+        super().__init__(original=original, command=StyleCommand(command=7))
 
 
 @final

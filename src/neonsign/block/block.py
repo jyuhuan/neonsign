@@ -37,6 +37,10 @@ class Block(Measurable, Renderable, ABC):
         from neonsign.block.impl.text_effects import BackgroundColoredBlock
         return BackgroundColoredBlock(self, color)
 
+    def inverted(self) -> Block:
+        from neonsign.block.impl.text_effects import ColorInvertedBlock
+        return ColorInvertedBlock(self)
+
     def bold(self) -> Block:
         from neonsign.block.impl.text_effects import BoldBlock
         return BoldBlock(self)

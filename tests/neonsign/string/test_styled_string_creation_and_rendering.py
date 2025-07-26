@@ -2,7 +2,8 @@ from unittest import TestCase
 
 from neonsign.core.colors import Color
 from neonsign.string.styled_string import (
-    BackgroundColoredString, BlinkingString, BoldString, ConcatenatedString,
+    BackgroundColoredString, BlinkingString, BoldString, ColorInvertedString,
+    ConcatenatedString,
     CrossedOutString, DoublyUnderlinedString, ForegroundColoredString,
     FramedString, HiddenString, ItalicString, LightString, OverlinedString,
     PaddedString, PlainString, UnderlinedString
@@ -167,6 +168,16 @@ class TestStyledStringCreationAndRendering(TestCase):
                 PlainString('test')
             ),
             expected_rendering='\033[48;5;100mtest\033[m',
+            expected_content='test',
+            expected_layout_size=4,
+        )
+        validate_styled_string(
+            test_case=self,
+            expression=s('test').inverted(),
+            expected_structure=ColorInvertedString(
+                PlainString('test')
+            ),
+            expected_rendering='\033[7mtest\033[m',
             expected_content='test',
             expected_layout_size=4,
         )

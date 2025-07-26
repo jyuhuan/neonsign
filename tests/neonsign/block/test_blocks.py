@@ -750,6 +750,10 @@ class TestBlocks(TestCase):
             label.background(Color.GREEN).rendered(),
         )
         self.assertEqual(
+            label.rendered().map(lambda _: _.styled_string.inverted()),
+            label.inverted().rendered(),
+        )
+        self.assertEqual(
             label.rendered().map(lambda _: _.styled_string.bold()),
             label.bold().rendered(),
         )

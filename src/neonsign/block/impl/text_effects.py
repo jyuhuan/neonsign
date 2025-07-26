@@ -74,6 +74,12 @@ class BackgroundColoredBlock(MappedBlock):
 
 
 @final
+class ColorInvertedBlock(MappedBlock):
+    def __init__(self, original: Block):
+        super().__init__(original, lambda _: _.inverted())
+
+
+@final
 class BoldBlock(MappedBlock):
     def __init__(self, original: Block):
         super().__init__(original, lambda _: _.bold())
