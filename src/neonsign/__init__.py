@@ -1,3 +1,7 @@
+from pkgutil import extend_path
+
+__path__ = extend_path(__path__, __name__)
+
 from neonsign.block.alignment import Alignment
 from neonsign.block.frame_styles import FrameStyle, FrameStyle
 from neonsign.block.impl.column import Column
