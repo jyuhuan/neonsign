@@ -21,6 +21,7 @@ from neonsign.block.impl.text_effects import (
     BlinkingBlock, BoldBlock, ForegroundColoredBlock, ItalicBlock,
     UnderlinedBlock
 )
+from neonsign.block.impl.text_area import TextArea
 from neonsign.block.block import Block
 from neonsign.core.colors import Color
 from neonsign.string.styled_string import StyledString
