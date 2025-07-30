@@ -1,29 +1,23 @@
-import sys
-from typing import Callable, List, Optional, Set
 from unittest import TestCase
 
 from neonsign import (
-    Block, Color, Column, FixedHeightBlock, FixedSizeBlock, FixedWidthBlock,
-    FrameStyle, HorizontalSeparator, Label, PaddedBlock, Row, FlexibleSpace,
+    Color, Column, FixedHeightBlock, FixedSizeBlock, FixedWidthBlock,
+    FlexibleSpace, FrameStyle, HorizontalSeparator, Label, PaddedBlock, Row,
     VerticalSeparator, s
 )
-from neonsign.block.impl.framed import _Frame
 from neonsign.block.canvas import Canvas, px
+from neonsign.block.impl.framed import _Frame
 from neonsign.block.impl.text_effects import MappedBlock
 from neonsign.core.size import Size
-
-MAX = sys.maxsize
-"""An alias for ``sys.maxsize`` to keep test code short."""
-
-
-DEFAULT_TEST_CONSTRAINTS: List[int] = list(range(0, 30, 2)) + [MAX]
+from tests.neonsign.block.utilities import MAX, run_size_and_render_tests
 
 
 class TestBlocks(TestCase):
 
     def test_label(self):
 
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Label(''),
             expected_unconstrained_size=Size.zero(),
             expected_size_given_width_constraint_only=lambda _: Size.zero(),
@@ -126,7 +120,8 @@ class TestBlocks(TestCase):
 
             }[size]()
 
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Label('12345'),
             expected_unconstrained_size=Size(width=5, height=1),
             expected_size_given_width_constraint_only=expected_size_given_width_constraint_only,
@@ -160,7 +155,8 @@ class TestBlocks(TestCase):
             if size > Size.zero():
                 return Canvas.of(size, pixel_factory=lambda x, y: ' ')
 
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             FlexibleSpace(),
             expected_unconstrained_size=Size(width=1, height=1),
             expected_size_given_width_constraint_only=expected_size_given_width_constraint_only,
@@ -293,7 +289,8 @@ class TestBlocks(TestCase):
                 ]),
             }[size]()
 
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             PaddedBlock(
                 original=Label('123'),
                 padding_top=1,
@@ -425,7 +422,8 @@ class TestBlocks(TestCase):
 
             }[size]()
 
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Label('1234').framed(title=Label('ab')),
             expected_unconstrained_size=Size(width=6, height=3),
             expected_size_given_width_constraint_only=expected_size_given_width_constraint_only,
@@ -462,7 +460,8 @@ class TestBlocks(TestCase):
 
     def test_column(self):
         # Case 1: An empty column:
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Column(),
             expected_unconstrained_size=Size.zero(),
             expected_size_given_width_constraint_only=lambda w: Size.zero(),
@@ -472,7 +471,8 @@ class TestBlocks(TestCase):
         )
 
         # Case 2: A column containing a flexible block
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Column(FlexibleSpace()),
             expected_unconstrained_size=Size.zero(),
             expected_size_given_width_constraint_only=lambda w: Size.zero(),
@@ -483,7 +483,8 @@ class TestBlocks(TestCase):
 
         # Case 3: A column containing only an inflexible block
         label_1 = Label('123')
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Column(label_1),
             expected_unconstrained_size=label_1.unconstrained_size,
             expected_size_given_width_constraint_only=lambda w: label_1.measure(width_constraint=w),
@@ -494,7 +495,8 @@ class TestBlocks(TestCase):
 
         # Case 4: A mix of flexible and inflexible blocks
         label_2 = Label('abcde')
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Column(label_1, FlexibleSpace(), label_2),
             expected_unconstrained_size=Size(width=5, height=2),
             expected_size_given_width_constraint_only=lambda w: Size(
@@ -606,7 +608,8 @@ class TestBlocks(TestCase):
 
     def test_row(self):
         # Case 1: An empty row:
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Row(),
             expected_unconstrained_size=Size.zero(),
             expected_size_given_width_constraint_only=lambda w: Size.zero(),
@@ -616,7 +619,8 @@ class TestBlocks(TestCase):
         )
 
         # Case 2: A row containing a flexible block
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Row(FlexibleSpace()),
             expected_unconstrained_size=Size.zero(),
             expected_size_given_width_constraint_only=lambda w: Size.zero(),
@@ -627,7 +631,8 @@ class TestBlocks(TestCase):
 
         # Case 3: A row containing only an inflexible block
         label_1 = Label('123')
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Row(label_1),
             expected_unconstrained_size=label_1.unconstrained_size,
             expected_size_given_width_constraint_only=lambda w: label_1.measure(width_constraint=w),
@@ -638,7 +643,8 @@ class TestBlocks(TestCase):
 
         # Case 4: A mix of flexible and inflexible blocks
         label_2 = Label('abcde')
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             Row(label_1, FlexibleSpace(), label_2),
             expected_unconstrained_size=Size(width=8, height=1),
             expected_size_given_width_constraint_only=lambda w: {
@@ -716,7 +722,8 @@ class TestBlocks(TestCase):
         )
 
     def test_horizontal_separator(self):
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             HorizontalSeparator(),
             expected_unconstrained_size=Size(width=3, height=1),
             expected_size_given_width_constraint_only=lambda w: Size(width=w, height=1) if w != 0 else Size.zero(),
@@ -726,7 +733,8 @@ class TestBlocks(TestCase):
         )
 
     def test_vertical_separator(self):
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             VerticalSeparator(),
             expected_unconstrained_size=Size(width=1, height=3),
             expected_size_given_width_constraint_only=lambda w: Size(width=1, height=3) if w != 0 else Size.zero(),
@@ -780,7 +788,8 @@ class TestBlocks(TestCase):
         block = label.resized(width=2)
         self.assertIsInstance(block, FixedWidthBlock)
         self.assertEqual((label,), block.subblocks)
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             block,
             expected_unconstrained_size=Size(width=2, height=2),
             expected_size_given_width_constraint_only=lambda w: Size(width=2, height=2),
@@ -802,7 +811,8 @@ class TestBlocks(TestCase):
         block = label.resized(height=3)
         self.assertIsInstance(block, FixedHeightBlock)
         self.assertEqual((label,), block.subblocks)
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             block,
             expected_unconstrained_size=Size(width=3, height=3),
             expected_size_given_width_constraint_only=lambda w: Size(width=min(w, 3), height=3) if w != 0 else Size.zero(),
@@ -830,7 +840,8 @@ class TestBlocks(TestCase):
         block = label.resized(width=2, height=3)
         self.assertIsInstance(block, FixedSizeBlock)
         self.assertEqual((label,), block.subblocks)
-        self.run_size_and_render_tests(
+        run_size_and_render_tests(
+            self,
             block,
             expected_unconstrained_size=Size(width=2, height=3),
             expected_size_given_width_constraint_only=lambda w: Size(width=2, height=3),
@@ -1018,147 +1029,3 @@ class TestBlocks(TestCase):
             '└───┘',
             str(Label('123').framed())
         )
-
-    #
-    # Utilities:
-    #
-
-    def run_size_and_render_tests(
-            self,
-            block: Block,
-            expected_unconstrained_size: Size,
-            expected_size_given_width_constraint_only: Callable[[int], Size],
-            expected_size_given_height_constraint_only: Callable[[int], Size],
-            expected_size_given_both_constraints: Callable[[int, int], Size],
-            expected_canvas: Callable[[Size], Canvas],
-            width_constraints_to_test: Optional[List[int]] = None,
-            height_constraints_to_test: Optional[List[int]] = None,
-    ):
-        if width_constraints_to_test is None:
-            width_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
-        if height_constraints_to_test is None:
-            height_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
-
-        observed_sizes = (
-            {self.run_unconstrained_size_test(
-                block,
-                expected_unconstrained_size
-            )}
-            | self.run_horizontal_squeeze_test(
-                block,
-                expected_size_given_width_constraint_only,
-                width_constraints_to_test=width_constraints_to_test
-            )
-            | self.run_vertical_squeeze_test(
-                block,
-                expected_size_given_height_constraint_only,
-                height_constraints_to_test=height_constraints_to_test
-            )
-            | self.run_both_directions_squeeze_test(
-                block,
-                expected_size_given_both_constraints,
-                width_constraints_to_test=width_constraints_to_test,
-                height_constraints_to_test=height_constraints_to_test
-            )
-        )
-
-        self.run_render_test(
-            block,
-            {_ for _ in observed_sizes if _.width < 1000 and _.height < 1000},
-            expected_canvas
-        )
-
-    def run_unconstrained_size_test(
-            self,
-            block: Block,
-            expected_unconstrained_size: Size
-    ) -> Size:
-        observed_size = expected_unconstrained_size
-        self.assertEqual(
-            observed_size,
-            block.unconstrained_size
-        )
-        return observed_size
-
-    def run_horizontal_squeeze_test(
-            self,
-            block: Block,
-            expected_size_given_width_constraint_only: Callable[[int], Size],
-            width_constraints_to_test: Optional[List[int]] = None,
-    ) -> Set[Size]:
-        if width_constraints_to_test is None:
-            width_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
-        observed_sizes: Set[Size] = set()
-        for width_constraint in width_constraints_to_test:
-            observed_size = block.measure(
-                width_constraint=width_constraint
-            )
-            self.assertEqual(
-                expected_size_given_width_constraint_only(width_constraint),
-                observed_size
-            )
-            if observed_size < Size(width=100, height=100):
-                observed_sizes.add(observed_size)
-        return observed_sizes
-
-    def run_vertical_squeeze_test(
-            self,
-            block: Block,
-            expected_size_given_height_constraint_only: Callable[[int], Size],
-            height_constraints_to_test: Optional[List[int]] = None,
-    ) -> Set[Size]:
-        if height_constraints_to_test is None:
-            height_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
-        observed_sizes: Set[Size] = set()
-        for height_constraint in height_constraints_to_test:
-            observed_size: Size = block.measure(
-                height_constraint=height_constraint
-            )
-            self.assertEqual(
-                expected_size_given_height_constraint_only(height_constraint),
-                observed_size
-            )
-            if observed_size < Size(width=100, height=100):
-                observed_sizes.add(observed_size)
-        return observed_sizes
-
-    def run_both_directions_squeeze_test(
-            self,
-            block: Block,
-            expected_size_given_both_constraints: Callable[[int, int], Size],
-            width_constraints_to_test: Optional[List[int]] = None,
-            height_constraints_to_test: Optional[List[int]] = None,
-    ) -> Set[Size]:
-        if width_constraints_to_test is None:
-            width_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
-        if height_constraints_to_test is None:
-            height_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
-        observed_sizes: Set[Size] = set()
-        for height_constraint in height_constraints_to_test:
-            for width_constraint in width_constraints_to_test:
-                observed_size = block.measure(
-                    width_constraint=width_constraint,
-                    height_constraint=height_constraint
-                )
-                self.assertEqual(
-                    expected_size_given_both_constraints(
-                        width_constraint,
-                        height_constraint
-                    ),
-                    observed_size
-                )
-                if observed_size < Size(width=100, height=100):
-                    observed_sizes.add(observed_size)
-        return observed_sizes
-
-    def run_render_test(
-            self,
-            block: Block,
-            sizes: Set[Size],
-            expected_canvas_at_sizes: Callable[[Size], Canvas]
-    ):
-        for size in sizes:
-            self.assertEqual(
-                expected_canvas_at_sizes(size),
-                block.render(granted_size=size)
-            )
