@@ -16,6 +16,7 @@ from neonsign.block.impl.separators import (
     HorizontalSeparator, VerticalSeparator
 )
 from neonsign.block.impl.flexible_space import FlexibleSpace
+from neonsign.block.impl.progress_bar import ProgressBar
 from neonsign.block.impl.text_effects import (
     BackgroundColoredBlock,
     BlinkingBlock, BoldBlock, ForegroundColoredBlock, ItalicBlock,
