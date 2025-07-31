@@ -166,3 +166,33 @@ class LayoutBlock(Block, ABC):
         for rect, render in zip(rects, renders):
             canvas = canvas.replace(rect.top_left, rect.size, render)
         return canvas
+
+
+class WrapperBlock(LayoutBlock):
+
+    def __init__(self, original: Block):
+        self.original = original
+
+    @property
+    def subblocks(self) -> Tuple[Block, ...]:
+        return (self.original,)
+
+    def _measure(
+            self,
+            width_constraint: Optional[int] = None,
+            height_constraint: Optional[int] = None
+    ) -> Size:
+        return self.original.measure(
+            width_constraint=width_constraint,
+            height_constraint=height_constraint
+        )
+
+    def _get_rects(self, granted_size: Size) -> Tuple[Rect, ...]:
+        return (
+            Rect.from_origin(
+                size=self.measure(
+                    width_constraint=granted_size.width,
+                    height_constraint=granted_size.height
+                )
+            ),
+        )

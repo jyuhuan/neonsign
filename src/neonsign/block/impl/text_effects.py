@@ -1,53 +1,26 @@
 from __future__ import annotations
 
-from typing import Callable, Optional, Tuple, final
+from typing import Callable, final
 
+from neonsign.block.block import Block, WrapperBlock
 from neonsign.block.canvas import (
     Canvas, Pixel, PixelSource,
     StyledStringPixel
 )
-from neonsign.block.block import Block, LayoutBlock
 from neonsign.core.colors import Color
-from neonsign.core.point import Point
-from neonsign.core.rect import Rect
 from neonsign.core.size import Size
 from neonsign.string.styled_string import StyledString
 
 
-class MappedBlock(LayoutBlock):
+class MappedBlock(WrapperBlock):
 
     def __init__(
             self,
             original: Block,
             f: Callable[[StyledString], StyledString]
     ):
-        self.original = original
+        super().__init__(original)
         self.f = f
-
-    @property
-    def subblocks(self) -> Tuple[Block, ...]:
-        return (self.original,)
-
-    def _measure(
-            self,
-            width_constraint: Optional[int] = None,
-            height_constraint: Optional[int] = None
-    ) -> Size:
-        return self.original.measure(
-            width_constraint=width_constraint,
-            height_constraint=height_constraint
-        )
-
-    def _get_rects(self, granted_size: Size) -> Tuple[Rect, ...]:
-        return (
-            Rect(
-                top_left=Point.origin(),
-                size=self.measure(
-                    width_constraint=granted_size.width,
-                    height_constraint=granted_size.height
-                )
-            ),
-        )
 
     def _render(self, granted_size: Size) -> Canvas:
         original_render: Canvas = self.original.render(granted_size)

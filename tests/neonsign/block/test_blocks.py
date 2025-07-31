@@ -2,9 +2,11 @@ from unittest import TestCase
 
 from neonsign import (
     Color, Column, FixedHeightBlock, FixedSizeBlock, FixedWidthBlock,
-    FlexibleSpace, FrameStyle, HorizontalSeparator, Label, PaddedBlock, Row,
+    FlexibleSpace, FrameStyle, HorizontalSeparator, Label, PaddedBlock,
+    Rectangle, Row,
     VerticalSeparator, s
 )
+from neonsign.block.block import WrapperBlock
 from neonsign.block.canvas import Canvas, px
 from neonsign.block.impl.framed import _Frame
 from neonsign.block.impl.text_effects import MappedBlock
@@ -855,6 +857,30 @@ class TestBlocks(TestCase):
             width_constraints_to_test=[0, 2, 4],
             height_constraints_to_test=[0, 2, 4],
         )
+
+    def test_wrapper_block(self):
+        originals = [
+            Label('1'),
+            Rectangle(),
+            Row(
+                Label('2'),
+                FlexibleSpace(),
+                Label('3')
+            )
+        ]
+        for original in originals:
+            wrapper = WrapperBlock(original=original)
+            run_size_and_render_tests(
+                test_case=self,
+                block=wrapper,
+                expected_unconstrained_size=original.unconstrained_size,
+                expected_size_given_width_constraint_only=lambda w: original.measure(width_constraint=w),
+                expected_size_given_height_constraint_only=lambda h: original.measure(height_constraint=h),
+                expected_size_given_both_constraints=lambda w, h: original.measure(width_constraint=w, height_constraint=h),
+                expected_canvas=lambda size: original.render(granted_size=size),
+                width_constraints_to_test=[0, 2, 4],
+                height_constraints_to_test=[0, 2, 4],
+            )
 
     def test_padding_methods(self):
         label = Label('123')
