@@ -33,13 +33,18 @@ class Column(LayoutBlock):
         if len(self.blocks) == 0:
             return []
 
+        flexibility = [
+            block.is_flexible_in_y_axis(width_constraint)
+            for block in self.blocks
+        ]
+
         inflexible_blocks: Dict[int, Block] = {
             i: block for i, block in enumerate(self.blocks)
-            if not block.is_flexible_in_y_axis(width_constraint)
+            if not flexibility[i]
         }
         flexible_blocks: Dict[int, Block] = {
             i: block for i, block in enumerate(self.blocks)
-            if block.is_flexible_in_y_axis(width_constraint)
+            if flexibility[i]
         }
 
         if width_constraint is None and height_constraint is None:

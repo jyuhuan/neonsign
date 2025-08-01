@@ -2,6 +2,7 @@ import sys
 from abc import ABC, abstractmethod
 from typing import Optional
 
+from neonsign.block.cache import current_layout_container
 from neonsign.core.size import Size
 
 
@@ -95,14 +96,22 @@ class Measurable(ABC):
         Returns:
             The size satisfying the constraints.
         """
-        size = self._measure(
-            width_constraint=width_constraint,
-            height_constraint=height_constraint
-        )
-        if size.width == 0 or size.height == 0:
-            return Size.zero()
-        else:
-            return size
+
+        def compute():
+            size = self._measure(
+                width_constraint=width_constraint,
+                height_constraint=height_constraint
+            )
+            if size.width == 0 or size.height == 0:
+                return Size.zero()
+            else:
+                return size
+
+        ctx = current_layout_container()
+        if ctx is None:
+            return compute()
+        cache_key = ctx.get_cache_key(self, width_constraint, height_constraint)
+        return ctx.cache.get(key=cache_key, compute=compute)
 
     @property
     def unconstrained_size(self) -> Size:

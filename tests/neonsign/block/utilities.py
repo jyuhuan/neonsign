@@ -5,6 +5,7 @@ from unittest import TestCase
 from neonsign import (
     Block
 )
+from neonsign.block.cache import LayoutContainer
 from neonsign.block.canvas import Canvas
 from neonsign.core.size import Size
 
@@ -31,32 +32,33 @@ def run_size_and_render_tests(
     if height_constraints_to_test is None:
         height_constraints_to_test = DEFAULT_TEST_CONSTRAINTS
 
-    observed_sizes = (
-        {run_unconstrained_size_test(
-            test_case,
-            block,
-            expected_unconstrained_size
-        )}
-        | run_horizontal_squeeze_test(
-            test_case,
-            block,
-            expected_size_given_width_constraint_only,
-            width_constraints_to_test=width_constraints_to_test
+    with LayoutContainer(block):
+        observed_sizes = (
+            {run_unconstrained_size_test(
+                test_case,
+                block,
+                expected_unconstrained_size
+            )}
+            | run_horizontal_squeeze_test(
+                test_case,
+                block,
+                expected_size_given_width_constraint_only,
+                width_constraints_to_test=width_constraints_to_test
+            )
+            | run_vertical_squeeze_test(
+                test_case,
+                block,
+                expected_size_given_height_constraint_only,
+                height_constraints_to_test=height_constraints_to_test
+            )
+            | run_both_directions_squeeze_test(
+                test_case,
+                block,
+                expected_size_given_both_constraints,
+                width_constraints_to_test=width_constraints_to_test,
+                height_constraints_to_test=height_constraints_to_test
+            )
         )
-        | run_vertical_squeeze_test(
-            test_case,
-            block,
-            expected_size_given_height_constraint_only,
-            height_constraints_to_test=height_constraints_to_test
-        )
-        | run_both_directions_squeeze_test(
-            test_case,
-            block,
-            expected_size_given_both_constraints,
-            width_constraints_to_test=width_constraints_to_test,
-            height_constraints_to_test=height_constraints_to_test
-        )
-    )
 
     run_render_test(
         test_case,

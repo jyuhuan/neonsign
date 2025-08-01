@@ -19,12 +19,14 @@ class Block(Measurable, Renderable, ABC):
             width_constraint: Optional[int] = None,
             height_constraint: Optional[int] = None
     ) -> Canvas:
-        return self.render(
-            granted_size=self.measure(
+        from neonsign.block.cache import LayoutContainer
+        with LayoutContainer(self):
+            granted_size = self.measure(
                 width_constraint=width_constraint,
-                height_constraint=height_constraint
+                height_constraint=height_constraint,
             )
-        )
+            canvas = self.render(granted_size=granted_size)
+            return canvas
 
     def __str__(self) -> str:
         return str(self.rendered())
