@@ -7,6 +7,7 @@ from functools import reduce
 from typing import Any, Callable, List, Tuple, Union, final
 
 from neonsign.core.point import Point
+from neonsign.core.rect import Rect
 from neonsign.core.size import Size
 from neonsign.string.styled_string import StyledString
 from neonsign.string.syntax import s
@@ -169,6 +170,21 @@ class Canvas:
             else:
                 return px(filler())
         return Canvas.of(new_size, pixel_factory)
+
+    def crop_or_pad_to_rect(
+            self,
+            rect: Rect,
+            filler: Callable[[], PixelSource] = lambda: TransparentPixel()
+    ) -> Canvas:
+        def pixel_factory(x: int, y: int) -> Pixel:
+            if (
+                    0 <= x + rect.top_left.x < self.size.width and
+                    0 <= y + rect.top_left.y < self.size.height
+            ):
+                return self.at(x=x + rect.top_left.x, y=y + rect.top_left.y)
+            else:
+                return px(filler())
+        return Canvas.of(rect.size, pixel_factory)
 
     def replace(self, start: Point, size: Size, new_canvas: Canvas) -> Canvas:
         def pixel_factory(x: int, y: int) -> Pixel:

@@ -5,6 +5,8 @@ from neonsign.block.canvas import (
     Canvas, CanvasAnchor, StyledStringPixel,
     TransparentPixel, px
 )
+from neonsign.core.point import Point
+from neonsign.core.rect import Rect
 from neonsign.core.size import Size
 
 
@@ -55,6 +57,26 @@ class TestCanvas(TestCase):
             StyledStringPixel(s('a')),
             px(StyledStringPixel(s('a')))
         )
+
+        with self.assertRaises(TypeError) as e:
+            px(0)
+        self.assertEqual(
+            "Pixel type <class 'int'> is not supported!",
+            str(e.exception)
+        )
+
+        with self.assertRaises(Exception) as e:
+            px('123')
+        self.assertEqual(
+            'Only a StyledString with exactly 1 character can be used as a pixel, '
+            'but 3 were provided!',
+            str(e.exception)
+        )
+
+    def test_pixel_rendering(self):
+        self.assertEqual(' ', str(px()))
+        self.assertEqual('1', str(px('1')))
+        self.assertEqual('1', str(px(s('1'))))
 
     def test_retrieving_pixels(self):
         canvas = Canvas.from_pixels(
@@ -283,6 +305,162 @@ class TestCanvas(TestCase):
             canvas.crop_or_pad_to(
                 new_size=Size(width=3, height=2),
                 anchor=CanvasAnchor.BOTTOM_RIGHT
+            ).pixels
+        )
+
+    def test_cropping_to_rect(self):
+        canvas = Canvas.from_pixels(
+            pixels=[
+                [px('A'), px('B'), px('C'), px('D'), px('E')],
+                [px('F'), px('G'), px('H'), px('I'), px('J')],
+                [px('K'), px('L'), px('M'), px('N'), px('O')],
+                [px('P'), px('Q'), px('R'), px('S'), px('T')],
+            ]
+        )
+
+        self.assertEqual(
+            (
+                (px('A'), px('B'), px('C'), px('D'), px('E')),
+                (px('F'), px('G'), px('H'), px('I'), px('J')),
+                (px('K'), px('L'), px('M'), px('N'), px('O')),
+                (px('P'), px('Q'), px('R'), px('S'), px('T')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=0, y=0),
+                    size=Size(width=5, height=4)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('A'), px('B'), px('C')),
+                (px('F'), px('G'), px('H')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=0, y=0),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('B'), px('C'), px('D')),
+                (px('G'), px('H'), px('I')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=1, y=0),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('C'), px('D'), px('E')),
+                (px('H'), px('I'), px('J')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=2, y=0),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('F'), px('G'), px('H')),
+                (px('K'), px('L'), px('M')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=0, y=1),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('G'), px('H'), px('I')),
+                (px('L'), px('M'), px('N')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=1, y=1),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('H'), px('I'), px('J')),
+                (px('M'), px('N'), px('O')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=2, y=1),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('K'), px('L'), px('M')),
+                (px('P'), px('Q'), px('R')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=0, y=2),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('L'), px('M'), px('N')),
+                (px('Q'), px('R'), px('S')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=1, y=2),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px('M'), px('N'), px('O')),
+                (px('R'), px('S'), px('T')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=2, y=2),
+                    size=Size(width=3, height=2)
+                )
+            ).pixels
+        )
+
+        self.assertEqual(
+            (
+                (px(), px(), px(), px(), px()),
+                (px(), px(), px('A'), px('B'), px('C')),
+                (px(), px(), px('F'), px('G'), px('H')),
+            ),
+            canvas.crop_or_pad_to_rect(
+                Rect(
+                    top_left=Point(x=-2, y=-1),
+                    size=Size(width=5, height=3)
+                )
             ).pixels
         )
 
