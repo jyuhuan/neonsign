@@ -29,6 +29,10 @@ class Block(Measurable, Renderable, ABC):
     def __str__(self) -> str:
         return str(self.rendered())
 
+    def keyed(self, key: str) -> Block:
+        from neonsign.block.impl.keyed_block import KeyedBlock
+        return KeyedBlock(self, key)
+
     def foreground(self, color: Color) -> Block:
         from neonsign.block.impl.text_effects import ForegroundColoredBlock
         return ForegroundColoredBlock(self, color)
