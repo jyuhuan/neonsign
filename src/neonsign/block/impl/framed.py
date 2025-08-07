@@ -14,29 +14,30 @@ from neonsign.core.size import Size
 
 
 @final
-@dataclass
 class FramedBlock(LayoutBlock):
-    original: Block
-    style: FrameStyle = FrameStyle.REGULAR
-    title: Optional[Block] = None
-    color: Optional[Color] = None
 
-    @property
-    def _padded_original(self) -> Block:
-        return self.original.padded(1)
+    def __init__(
+            self,
+            original: Block,
+            style: FrameStyle = FrameStyle.REGULAR,
+            title: Optional[Block] = None,
+            color: Optional[Color] = None,
+    ):
+        self.original = original
+        self.style = style
+        self.title = title
+        self.color = color
 
-    @property
-    def _frame(self) -> Block:
-        frame = _Frame(style=self.style)
+        self._padded_original = self.original.padded(1)
+
+        self._frame = _Frame(style=self.style)
         if self.color is not None:
-            return frame.foreground(self.color)
-        return frame
+            self._frame = self._frame.foreground(self.color)
 
-    @property
-    def _padded_title(self) -> Optional[Block]:
         if self.title is None:
-            return None
-        return self.title.padded_horizontally(1)
+            self._padded_title = None
+        else:
+            self._padded_title = title.padded_horizontally(1)
 
     @property
     def subblocks(self) -> Tuple[Block, ...]:
@@ -61,8 +62,7 @@ class FramedBlock(LayoutBlock):
         )
 
     def _get_rects(self, granted_size: Size) -> Tuple[Rect, ...]:
-        frame_rect = Rect(
-            top_left=Point.origin(),
+        frame_rect = Rect.from_origin(
             size=self._frame.measure(
                 width_constraint=granted_size.width,
                 height_constraint=granted_size.height
@@ -74,8 +74,7 @@ class FramedBlock(LayoutBlock):
             height_constraint=granted_size.height
         )
 
-        padded_original_rect = Rect(
-            top_left=Point.origin(),
+        padded_original_rect = Rect.from_origin(
             size=self.original.padded(1).measure(
                 width_constraint=granted_size.width,
                 height_constraint=granted_size.height
